@@ -1,0 +1,11 @@
+[
+  {
+    "id": "screen.home",
+    "report": "03-screens/home.md",
+    "evidence": [
+      "src/screens/Home.tsx:1-240",
+      "runtime:ios/home-default.png"
+    ],
+    "agent": "screen-worker-01"
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "name": "mobile-app-anatomy-marketplace",
+  "owner": {
+    "name": "Irfan Emre Utkan"
+  },
+  "plugins": [
+    {
+      "name": "mobile-app-anatomy",
+      "source": "./",
+      "description": "Exhaustively maps every relevant mobile-app source unit, screen, feature, flow, state, service, and native integration into a verified anatomy atlas.",
+      "version": "1.0.0"
+    }
+  ]
+}

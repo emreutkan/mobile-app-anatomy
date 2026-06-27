@@ -1,0 +1,8 @@
+{
+  "name": "mobile-app-anatomy",
+  "version": "1.0.0",
+  "description": "Exhaustive, evidence-backed reverse engineering and documentation of mobile application codebases.",
+  "author": {
+    "name": "Irfan Emre Utkan"
+  }
+}

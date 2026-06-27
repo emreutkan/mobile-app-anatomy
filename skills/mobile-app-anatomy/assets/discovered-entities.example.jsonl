@@ -1,0 +1,2 @@
+{"id":"flow.login.apple","kind":"user_flow","title":"Sign in with Apple","sources":["src/auth/LoginScreen.tsx:80","ios/Auth/AppleSignIn.swift:20"],"metadata":{"platforms":["iOS"]}}
+{"id":"state.session","kind":"state_system","title":"Session lifecycle","sources":["src/state/session.ts:1"]}

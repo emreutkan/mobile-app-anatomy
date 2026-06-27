@@ -1,0 +1,10 @@
+[
+  {
+    "unit": "u_replace_with_line_shard_id",
+    "report": "evidence/chunks/u_replace_with_line_shard_id.md",
+    "evidence": [
+      "src/path/to/file.ts:1-300"
+    ],
+    "agent": "line-shard-worker-01"
+  }
+]

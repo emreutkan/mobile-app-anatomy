@@ -1,0 +1,20 @@
+{
+  "name": "mobile-app-anatomy-local",
+  "interface": {
+    "displayName": "Mobile App Anatomy"
+  },
+  "plugins": [
+    {
+      "name": "mobile-app-anatomy",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
