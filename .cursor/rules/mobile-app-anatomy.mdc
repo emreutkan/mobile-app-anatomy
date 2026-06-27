@@ -1,0 +1,18 @@
+---
+description: Exhaustively reverse-engineer a mobile application and build an evidence-backed GOD_README without sampling or skipping relevant source.
+alwaysApply: false
+---
+
+When the user asks to understand, map, document, reverse-engineer, audit, or create a complete atlas of a mobile application, read and follow:
+
+`.cursor/skills/mobile-app-anatomy/SKILL.md`
+
+Mandatory constraints:
+
+- Use the deterministic ledger. Do not rely on a mental checklist.
+- Start at cold process launch and recursively expand the route/action/feature frontier.
+- Account for every project-owned file and every generated line shard.
+- Maintain `not_tracked`, `tracking`, and `tracked_fully` states.
+- Persist reports and evidence continuously.
+- Never use sampling as completion evidence.
+- Do not declare completion until `anatomy.py validate` returns `VALIDATION PASS`.

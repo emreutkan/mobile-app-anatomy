@@ -1,5 +1,7 @@
 # Mobile App Anatomy
 
+Current release: `1.0.1`
+
 `mobile-app-anatomy` is an exhaustive reverse-engineering skill for large mobile applications. It is designed for React Native/Expo, Flutter, native Android, native iOS, Kotlin Multiplatform, and mixed repositories.
 
 It does not produce a conventional repository summary. It creates a persistent census, divides every relevant text file into auditable line shards, reconstructs the application from cold launch outward, maps screens/components/features/flows/state/services/native behavior, validates runtime behavior where tooling is available, and refuses to finish until the coverage validator passes.
@@ -76,6 +78,10 @@ codex plugin marketplace add /absolute/path/to/mobile-app-anatomy
 
 Then install `mobile-app-anatomy` from the Codex plugin directory. Direct local-skill installation through `install.ps1` or `install.sh` remains the simplest setup for personal use.
 
+## Windows shell compatibility
+
+The skill is explicitly compatible with Windows PowerShell 5.1. Agents are instructed not to use `&&`, `||`, POSIX line continuations, or POSIX environment assignment syntax when PowerShell 5.1 is active. Git specimen commands are run separately.
+
 ## GitNexus setup
 
 Install and index inside the application repository:
@@ -114,6 +120,15 @@ python <skill-dir>/scripts/anatomy.py init \
   --runtime-mode auto
 ```
 
+Agent/client directories such as `.agents`, `.claude`, `.codex`, `.cursor`, `.cline`, `.gemini`, `.junie`, and `.opencode` are excluded by default so installed skills do not contaminate the app census. Add custom repository-relative exclusions when needed:
+
+```powershell
+python <skill-dir>/scripts/anatomy.py init `
+  --repo . `
+  --out ./docs/mobile-app-anatomy `
+  --exclude-dir tools/non-product-fixtures
+```
+
 Force inclusion of behaviorally relevant generated subtrees that would otherwise be excluded as build output:
 
 ```bash
@@ -129,6 +144,8 @@ Resume later with:
 python <skill-dir>/scripts/anatomy.py refresh --repo . --out ./docs/mobile-app-anatomy
 python <skill-dir>/scripts/anatomy.py status --out ./docs/mobile-app-anatomy
 ```
+
+If the initial census already included non-product tooling, refresh after upgrading to 1.0.1. Default agent directories will be removed from the current ledger and archived automatically. For other paths, add `--exclude-dir <relative-path>` to `refresh`. Unit IDs from removed or reshaped files are stale; obtain fresh IDs through `claim-next`.
 
 
 For large repositories, use batch operations:

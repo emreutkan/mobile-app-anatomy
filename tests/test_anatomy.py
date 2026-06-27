@@ -26,6 +26,9 @@ class AnatomySmokeTest(unittest.TestCase):
         (root / "app").mkdir(parents=True)
         (root / "src" / "state").mkdir(parents=True)
         (root / "node_modules" / "ignored").mkdir(parents=True)
+        (root / ".agents" / "skills" / "foreign-skill").mkdir(parents=True)
+        (root / ".cursor" / "skills" / "foreign-skill").mkdir(parents=True)
+        (root / "tools" / "non_product").mkdir(parents=True)
         (root / "android" / "app" / "build" / "generated" / "source").mkdir(parents=True)
         (root / "package.json").write_text(json.dumps({
             "dependencies": {
@@ -46,6 +49,9 @@ class AnatomySmokeTest(unittest.TestCase):
             "export function restoreSession(){ return null; }\n"
         )
         (root / "node_modules" / "ignored" / "index.js").write_text("ignored")
+        (root / ".agents" / "skills" / "foreign-skill" / "SKILL.md").write_text("# not product")
+        (root / ".cursor" / "skills" / "foreign-skill" / "SKILL.md").write_text("# not product")
+        (root / "tools" / "non_product" / "fixture.ts").write_text("export const fixture = true;\n")
         (root / "android" / "app" / "build" / "generated" / "source" / "Generated.kt").write_text(
             "class GeneratedThing {}\n"
         )
@@ -61,12 +67,17 @@ class AnatomySmokeTest(unittest.TestCase):
                 "init", "--repo", str(repo), "--out", str(out),
                 "--chunk-lines", "25",
                 "--include-dir", "android/app/build/generated",
+                "--exclude-dir", "tools/non_product",
             )
 
             ledger = json.loads((out / "machine" / "ledger.json").read_text())
             self.assertIn("app/login.tsx", ledger["files"])
             self.assertIn("android/app/build/generated/source/Generated.kt", ledger["files"])
             self.assertFalse(any(path.startswith("node_modules/") for path in ledger["files"]))
+            self.assertFalse(any(path.startswith(".agents/") for path in ledger["files"]))
+            self.assertFalse(any(path.startswith(".cursor/") for path in ledger["files"]))
+            self.assertFalse(any(path.startswith("tools/non_product/") for path in ledger["files"]))
+            self.assertIn("tools/non_product", ledger["exclude_dirs"])
 
             routes = json.loads((out / "machine" / "routes_seed.json").read_text())["routes"]
             self.assertTrue(any(route["target"] == "/login" for route in routes))
@@ -96,6 +107,30 @@ class AnatomySmokeTest(unittest.TestCase):
                 "complete-batch", "--out", str(out), "--manifest", str(manifest_path),
             ).stdout)
             self.assertEqual(result["count"], len(claimed))
+
+    def test_refresh_preserves_custom_exclusions_and_unknown_unit_is_actionable(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp) / "repo"
+            repo.mkdir()
+            self.make_repo(repo)
+            out = repo / "docs" / "mobile-app-anatomy"
+
+            self.run_cli(
+                "init", "--repo", str(repo), "--out", str(out),
+                "--exclude-dir", "tools/non_product",
+            )
+            self.run_cli("refresh", "--repo", str(repo), "--out", str(out))
+            ledger = json.loads((out / "machine" / "ledger.json").read_text())
+            self.assertIn("tools/non_product", ledger["exclude_dirs"])
+            self.assertFalse(any(path.startswith("tools/non_product/") for path in ledger["files"]))
+
+            failed = subprocess.run(
+                [sys.executable, str(ANATOMY), "claim", "--out", str(out), "--unit", "u_stale"],
+                text=True, capture_output=True, check=False,
+            )
+            self.assertEqual(failed.returncode, 2)
+            self.assertIn("may be stale", failed.stderr)
+            self.assertIn("claim-next", failed.stderr)
 
     def test_renderer(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

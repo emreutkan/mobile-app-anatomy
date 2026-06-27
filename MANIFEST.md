@@ -1,6 +1,6 @@
 # Release manifest
 
-Version: `1.0.0`
+Version: `1.0.1`
 
 Primary components:
 
@@ -22,3 +22,11 @@ Packaging checks:
 - Shell syntax: PASS
 - Unit smoke tests: PASS
 - End-to-end validator smoke test: PASS
+
+## 1.0.1 fixes
+
+- Added Windows PowerShell 5.1 command discipline; agents must not use `&&`/`||`.
+- Excluded common repo-local agent/client directories before census creation.
+- Added repeatable `--exclude-dir` to `init` and `refresh`.
+- Added actionable diagnostics for stale or malformed unit IDs.
+- Added regression tests for default agent-directory exclusions and custom exclusion persistence.

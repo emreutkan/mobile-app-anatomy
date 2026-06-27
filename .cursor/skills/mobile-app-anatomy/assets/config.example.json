@@ -1,0 +1,14 @@
+{
+  "mode": "exhaustive",
+  "chunk_lines": 300,
+  "runtime": "auto",
+  "output": "docs/mobile-app-anatomy",
+  "include_tests": true,
+  "include_native_projects": true,
+  "include_generated_project_owned_source": true,
+  "require_line_shard_coverage": true,
+  "require_file_synthesis": true,
+  "require_runtime_evidence_when_available": true,
+  "allow_sampling": false,
+  "completion_command": "python <skill-dir>/scripts/anatomy.py validate --out docs/mobile-app-anatomy"
+}
